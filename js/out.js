@@ -98,6 +98,7 @@ var Game = function Game() {
   this.jellyfish = new Jellyfish();
   this.coin = new Coin();
   this.score = 0;
+  this.speedUp = 250;
   this.index = function (x, y) {
     return x + y * 10;
   };
@@ -182,6 +183,7 @@ var Game = function Game() {
       this.score++;
       var summary = document.querySelector("#score strong");
       summary.innerText = this.score;
+      this.moveFaster();
       this.showCoin();
       return true;
     }
@@ -201,6 +203,20 @@ var Game = function Game() {
     var gameOver = document.querySelector(".gameOver").classList.add("show");
     this.hideVisibleCoin();
     this.hideVisibleJellyfish();
+  };
+
+  this.moveFaster = function () {
+
+    if (this.score > 5 && this.score <= 10) {
+      this.speedUp = 200;
+    } else if (this.score > 10) {
+      this.speedUp = 150;
+    }
+
+    clearInterval(self.idSetInterval);
+    self.idSetInterval = setInterval(function () {
+      self.moveJellyfish();
+    }, this.speedUp);
   };
 
   this.startGame = function () {

@@ -1,8 +1,8 @@
 for (var i = 0; i < 100; i++) {
-        var boxElement = document.createElement('div');
-        var gameBoard = document.getElementById('board');
-        gameBoard.appendChild(boxElement);
-    }
+  var boxElement = document.createElement('div');
+  var gameBoard = document.getElementById('board');
+  gameBoard.appendChild(boxElement);
+}
 
 var Jellyfish = function() {
   this.x = 0;
@@ -24,6 +24,7 @@ var Game = function() {
   this.jellyfish = new Jellyfish();
   this.coin = new Coin();
   this.score = 0;
+  this.speedUp = 250;
   this.index = function(x, y) {
     return x + (y * 10);
   };
@@ -119,6 +120,7 @@ var Game = function() {
       this.score++;
       var summary = document.querySelector("#score strong");
       summary.innerText = this.score;
+      this.moveFaster();
       this.showCoin();
       return true;
     }
@@ -138,8 +140,22 @@ var Game = function() {
     var gameOver = document.querySelector(".gameOver").classList.add("show");
     this.hideVisibleCoin();
     this.hideVisibleJellyfish();
+  };
 
+  this.moveFaster = function() {
+
+    if (this.score > 5 && this.score <= 10) {
+      this.speedUp = 200;
+    } else if (this.score > 10) {
+      this.speedUp = 150;
+    }
+
+    clearInterval(self.idSetInterval);
+    self.idSetInterval = setInterval(function() {
+      self.moveJellyfish()
+    }, this.speedUp);
   }
+
 
   this.startGame = function() {
     self.idSetInterval = setInterval(function() {
